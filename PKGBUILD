@@ -47,8 +47,18 @@ depends=(
 )
 
 _dir="geometry-${pkgver}/tf"
-source=("${pkgname}-${pkgver}.tar.gz"::"https://github.com/ros/geometry/archive/${pkgver}.tar.gz")
-sha256sums=('6b653d4e10503d3da56bc4000e39ce58d6a85547a37837da576edccecc0c6ae2')
+source=(
+	"${pkgname}-${pkgver}.tar.gz"::"https://github.com/ros/geometry/archive/${pkgver}.tar.gz"
+	00-fix-compiling-errors.patch
+)
+sha256sums=(
+	'6b653d4e10503d3da56bc4000e39ce58d6a85547a37837da576edccecc0c6ae2'
+	'04b5e1e32da66c9f43c8a572aa97765d6d9156b03f1f4e80ea95645d966f1380'
+)
+
+prepare () {
+	patch --directory="${srcdir}/${_dir}/../" --forward --strip=1 --input="${srcdir}/00-fix-compiling-errors.patch"
+}
 
 build() {
 	# Use ROS environment variables.
